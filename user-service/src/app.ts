@@ -5,6 +5,7 @@ import Fastify, {
   FastifyRequest,
   FastifyServerOptions,
 } from 'fastify';
+import reqLoggerMiddleware from "./middlewares/req.middleware.js";
 import { corsMiddleware } from './middlewares/cors.middleware.js';
 import fastifyHelmet from '@fastify/helmet';
 import fastifyCookie from '@fastify/cookie';
@@ -15,6 +16,8 @@ export function buildApp(options: FastifyServerOptions = {}): FastifyInstance {
     ...options,
     logger: false,
   });
+
+  app.register(reqLoggerMiddleware);
 
   app.register(corsMiddleware);
 
