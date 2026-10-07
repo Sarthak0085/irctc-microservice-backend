@@ -44,3 +44,5 @@ Thumbs.db
 .npm
 .eslintcache
 .prettiercache
+
+/src/generated/prisma
