@@ -10,6 +10,7 @@ import { corsMiddleware } from './middlewares/cors.middleware.js';
 import fastifyHelmet from '@fastify/helmet';
 import fastifyCookie from '@fastify/cookie';
 import { logger } from './utils/logger.js';
+import { globalErrorMiddleware } from './middlewares/error.middleware.js';
 
 export function buildApp(options: FastifyServerOptions = {}): FastifyInstance {
   const app = Fastify({
@@ -39,13 +40,7 @@ export function buildApp(options: FastifyServerOptions = {}): FastifyInstance {
     });
   });
 
-  app.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply)=>{
-    logger.error(error);
-    reply.status(error.statusCode || 500).send({
-        error: error?.name || "InternalServerError",
-        message: error?.message || "Something went wrong",
-    })
-  });
+  app.setErrorHandler(globalErrorMiddleware);
 
   return app;
 }
